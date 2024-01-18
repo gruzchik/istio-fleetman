@@ -1,1 +1,33 @@
-
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: fleetman-webapp
+  namespace: default
+spec:
+  hosts:
+    - fleetman-webapp
+  http:
+    - route:
+        - destination:
+            host: fleetman-webapp
+            subset: original # The name defined in th DestinationRule
+          weight: 90
+        - destination:
+            host: fleetman-webapp
+            subset: experimental # The name defined in th DestinationRule
+          weight: 10
+---
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: fleetman-webapp
+  namespace: default
+spec:
+  host: fleetman-webapp
+  subsets:
+    - labels:
+        version: original
+      name: original
+    - labels:
+        version: experimental
+      name: experimental
