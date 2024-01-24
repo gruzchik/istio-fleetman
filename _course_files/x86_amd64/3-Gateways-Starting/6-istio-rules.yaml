@@ -24,15 +24,22 @@ spec:
   gateways:
     - ingress-gateway-configuration
   http:
-    - route:
-        - destination:
-            host: fleetman-webapp
-            subset: original # The name defined in th DestinationRule
-          weight: 90
-        - destination:
-            host: fleetman-webapp
-            subset: experimental # The name defined in th DestinationRule
-          weight: 10
+    - match:
+      - uri: #IF
+          prefix: "/experimental"
+      - uri: #OR
+          prefix: "/canary"
+      route: #THEN
+      - destination:
+          host: fleetman-webapp
+          subset: experimental # The name defined in th DestinationRule
+    - match:
+      - uri: #IF
+          prefix: "/"
+      route: #THEN
+      - destination:
+          host: fleetman-webapp
+          subset: original # The name defined in th DestinationRule
 ---
 kind: DestinationRule
 apiVersion: networking.istio.io/v1alpha3

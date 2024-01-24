@@ -11,6 +11,11 @@ spec:
         - headers:
             x-my-header:
               exact: canary
+      fault:
+        delay:
+          percentage:
+            value: 100.0
+          fixedDelay: 10s # BE CAREFUL, same intendation witn percentage
       route:
         - destination:
             host: fleetman-staff-service

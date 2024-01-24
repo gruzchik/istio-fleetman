@@ -32,7 +32,7 @@ spec:
       - destination:
           host: fleetman-webapp
           subset: experimental
-    - route: # CATCH ALL
+    - route: # CATCH ALL, should be on the same level like match
       - destination:
           host: fleetman-webapp
           subset: original
